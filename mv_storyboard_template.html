@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>「アカナツ」MV絵コンテボード</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg: #f8f9fa;
+      --text: #2d3748;
+      --text-light: #718096;
+      --border: #e2e8f0;
+      --accent: #4299e1;
+      --red-accent: #e53e3e;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--accent), #667eea);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .header .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    .header .duration {
+      margin-top: 12px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    
+    .storyboard {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .scene-item {
+      display: grid;
+      grid-template-columns: 120px 400px 1fr;
+      gap: 25px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    
+    .scene-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+    
+    .timecode {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, var(--accent), #667eea);
+      color: white;
+      border-radius: 12px;
+      padding: 15px 10px;
+      height: fit-content;
+    }
+    
+    .timecode .time {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .timecode .duration {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      background: rgba(255,255,255,0.2);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+    
+    .image-frame {
+      position: relative;
+      aspect-ratio: 16/9;
+      border: 3px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7fafc;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    
+    .image-frame:hover {
+      border-color: var(--accent);
+      border-style: solid;
+    }
+    
+    .image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .image-placeholder {
+      text-align: center;
+      color: var(--text-light);
+      padding: 20px;
+    }
+    
+    .image-placeholder .icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+    
+    .image-placeholder .text {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    
+    .scene-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .scene-header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+    }
+    
+    .scene-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    
+    .scene-lyrics {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+    
+    .prompt-section {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px;
+      border-left: 4px solid var(--accent);
+    }
+    
+    .prompt-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    
+    .prompt-text {
+      font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
+    }
+    
+    .description-section {
+      background: #fff8f0;
+      border-radius: 12px;
+      padding: 18px;
+      border-left: 4px solid var(--warning);
+    }
+    
+    .description-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--warning);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    
+    .description-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .video-duration {
+      background: var(--success);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 12px;
+    }
+    
+    .upload-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .image-frame:hover .upload-btn {
+      opacity: 1;
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    @media (max-width: 1200px) {
+      .scene-item {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .timecode {
+        width: 100%;
+        padding: 15px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+      }
+      
+      .scene-item {
+        padding: 20px;
+      }
+      
+      .image-frame {
+        aspect-ratio: 4/3;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>「アカナツ」MV絵コンテボード</h1>
+    <div class="subtitle">AI生成画像配置・制作進行管理</div>
+    <div class="duration">総尺: 2:53 | 推定シーン数: 20+</div>
+  </div>
+
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-number" id="total-scenes">46</div>
+        <div class="stat-label">総シーン数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="completed-images">0</div>
+        <div class="stat-label">画像完成</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="estimated-video-length">6:30</div>
+        <div class="stat-label">推定動画尺</div>
+      </div>
+    </div>
+
+    <div class="storyboard" id="storyboard">
+      <!-- シーン1 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:13]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/Au2v6y0h-E7tH6Js8vJXR_711507ee35da4e6f91cf1e8815744f02.jpg" alt="Present Day - ケンジの部屋（改良版モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">Present Day - ケンジの部屋</div>
+            <div class="scene-lyrics">もしも明日晴れたなら</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Present day. **Kenji** is in his quiet room, squinting against the brilliant sunlight streaming through the window. A single, slightly faded photograph sits on his desk.
+
+[マスタープロンプト]
+A masterpiece oil painting, soft and emotional brushstrokes, nostalgic and dreamy atmosphere. Pastel color palette, bathed in the warm, hazy glow of a perpetual summer golden hour.</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在のケンジが部屋で過去の写真を見つめている。窓から差し込む光が nostalgic な雰囲気を演出。ここから回想シーンへ移行する重要な導入部分。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン2 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:13]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/koala/FvHVGtXeqMY2UJUWApbNO_b2b740197add48a6b6ff3ca7c11ae05d.jpg" alt="風鈴のクローズアップ（改良版モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">風鈴と夏雲</div>
+            <div class="scene-lyrics">もしも明日晴れたなら</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Close-up on a glass wind chime (furin) hanging by the open window, shimmering in the light. Through the window, soft-focus summer clouds are visible.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">風鈴が光に揺らめき、窓の外には柔らかな夏の雲が見える。日本の夏の象徴的なモチーフで、ノスタルジックな雰囲気を強調。</div>
+            <div class="video-duration">⏱️ 推定I2V: 3-4秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン3 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:13]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/rabbit/YXBw3EomMf8bnXnJ6levf_231f9051d41046308d9ce5bfe491dd2a.jpg" alt="駅で待つケンジ（改良版モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">Flashback - 駅で待つケンジ</div>
+            <div class="scene-lyrics">もしも明日晴れたなら</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Flashback. **Kenji** stands waiting at a train station ticket gate, a look of shy anticipation on his face.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">回想シーン開始。駅の改札でユイを待つケンジの緊張と期待が混じった表情。初々しい恋心を表現する重要なシーン。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン4 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:18]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/QfsP5eI2YwakiSlC5pmYq_2b6880bd68cd476d8824b68705a5ea27.jpg" alt="ユイの登場（改良版モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">ユイが改札から現れる</div>
+            <div class="scene-lyrics">君に会いに行こう</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Yui**, wearing her white sundress, emerges from the other side of the ticket gate, waving with a radiant smile.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">白いサンドレス姿のユイが改札から現れ、輝くような笑顔で手を振る。二人の出会いの瞬間を美しく描く、MV全体の核心となるシーン。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン5 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:18]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/TwenE6-DOyxz4Hc_0eMJx_ee876b28d14247a1a9a8c7991ef007f3.jpg" alt="並んで歩く二人（改良版モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">二人で歩くシーン</div>
+            <div class="scene-lyrics">君に会いに行こう</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Low-angle shot of **Kenji** and **Yui**'s feet as they walk side-by-side on a sun-dappled pavement, their steps light and joyful.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">二人が並んで歩く足元のローアングルショット。木漏れ日が踊る歩道を軽やかに歩く様子で、幸せな気持ちを視覚的に表現。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン6 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:25]</div>
+          <div class="duration">~25秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/cItXBWV4dFdgMy8l826Vb_e927092a8d514134a2fccf8d051b4fe4.jpg" alt="広大なビーチに立つ二人（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">広大なビーチに立つ二人</div>
+            <div class="scene-lyrics">白い砂浜と青い海</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Wide, breathtaking shot of **Kenji** and **Yui** standing on a vast, empty beach. The sky is a perfect pastel blue, meeting the gentle turquoise sea.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">広大で空っぽのビーチに立つ二人のワイドショット。完璧なパステルブルーの空が優しいターコイズブルーの海と出会う美しい風景。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン7 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:25]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame" onclick="uploadImage(this)">
+          <input type="file" class="file-input" accept="image/*" onchange="handleImageUpload(this)">
+          <button class="upload-btn">📁 画像選択</button>
+          <img src="https://v3.fal.media/files/elephant/pRgvsXxIufYMeB1s1Xe54_ea4e9759d7674591928b11a273bfd559.jpg" alt="ユイが波と遊ぶのを見るケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">波打ち際で遊ぶユイを見るケンジ</div>
+            <div class="scene-lyrics">白い砂浜と青い海</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">View from behind **Kenji** as he watches **Yui** playfully running along the shoreline, splashing in the shallow waves.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの後ろから見た構図で、ユイが波打ち際で遊んでいる様子を見守っている。浅い波でぴちゃぴちゃと遊ぶユイの自由な様子。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン8 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:30]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/psFheLcQL-B7-avcTibzj_434cfbd8921142489b8fd8912c5c5aad.jpg" alt="砂浜で海を見つめる二人（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">肩を寄せ合って海を見る</div>
+            <div class="scene-lyrics">あの時の二人みたいだね</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Kenji** and **Yui** sitting together on the sand, side-profile, looking out at the ocean. Their shoulders are almost touching, sharing a moment of comfortable silence.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">砂浜に座る二人の横顔、海を見つめている。肩がほとんど触れそうなほど近くで、心地よい沈黙のひとときを共有している。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン9 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:30]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/lSpVAJxzLGCOTTDhnLAA4_d227eac19d6b444c8191c26fc1ea0191.jpg" alt="ケンジに微笑みかけるユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">振り返るユイのクローズアップ</div>
+            <div class="scene-lyrics">あの時の二人みたいだね</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Close-up on **Yui**'s face as she turns to smile at **Kenji**, her eyes sparkling with affection.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジに向けて振り返って微笑むユイの顔のクローズアップ。愛情で輝く瞳が印象的な、感情的にハイライトとなるシーン。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン10 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:37]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/rabbit/F1X1MscfZqZy5eh-wsl6b_output.png" alt="赤いハイビスカス">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">砂浜の赤い花</div>
+            <div class="scene-lyrics">「綺麗だね」って君が言った</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Extreme close-up of a single, vibrant red hibiscus flower growing in the sand, illuminated by the setting sun.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">砂浜に咲く一輪の鮮やかな赤いハイビスカスの極めてクローズアップ。夕日に照らされて美しく輝く、MV全体のキーモチーフ。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン11 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:37]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/taH9x2XTbeAIvBm1iRXJG_2685b61c139e48f6ba9e0ee778e013e8.jpg" alt="花を指すユイの横顔（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夕日に照らされるユイの横顔</div>
+            <div class="scene-lyrics">「綺麗だね」って君が言った</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Yui**'s profile as she points at the flower, her face full of wonder. The orange light of sunset beautifully catches in her hair.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">花を指すユイの横顔、驚きに満ちた表情。夕日のオレンジ色の光が彼女の髪に美しく映りこんでいる。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン12 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:41]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/elephant/2aRJ9ZsGm5N0WimAfkxWW_010e7e6b309c4e0283edf0369e2254bd.jpg" alt="スマホを見るケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">スマホを見るケンジ</div>
+            <div class="scene-lyrics">赤い花の意味</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Over-the-shoulder shot of **Kenji** looking at his smartphone, the screen reflecting in his slightly surprised eyes.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジがスマートフォンを見ているオーバー・ザ・ショルダーショット。画面が彼の少し驚いた瞳に映りこんでいる。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン13 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:41]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/sqpUyuM03LZscQ4iDBZ0d_402eb3966b0440269f43e920b5f536ad.jpg" alt="理解するケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">頬を赤らめて見つめるケンジ</div>
+            <div class="scene-lyrics">赤い花の意味</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Kenji** looks up from his phone, his cheeks faintly flushed, gazing at **Yui** with a newfound understanding.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジがスマホから顔を上げ、頬がほんのり赤らんで、新しい理解をもってユイを見つめている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン14 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:43]</div>
+          <div class="duration">~16秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/xr7ONZpYsjtGBXQ4BIdp9_5dbce1f36eed4d2194accbce817895b3.jpg" alt="好奇心いっぱいのユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">好奇心いっぱいのユイ</div>
+            <div class="scene-lyrics">まだ知らなかったんだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Yui** tilting her head with a curious and innocent expression, as if asking "What is it?".
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ユイが好奇心いっぱいで無邪気な表情で首をかしげて、「何？」と聞いているような様子。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン15 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:43]</div>
+          <div class="duration">~17秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/rabbit/QGpvWk7Uu80-wgyKYME2y_f32e34d94fcf4181a2c4522df3ff9366.jpg" alt="夕日の中の甘い気まずさ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夕日の中の甘い気まずさ</div>
+            <div class="scene-lyrics">まだ知らなかったんだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A soft-focus shot capturing the sweet, slightly awkward atmosphere between **Kenji** and **Yui** as the sun sets.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">太陽が沈む中、ケンジとユイの間の甘くて少し気まずい雰囲気を捉えたソフトフォーカスのショット。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン16 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:46]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/tiger/F1R7R6hSw2HnPKL6hd-bp_ebad3b47913e465c9aff434951db3dff.jpg" alt="8月31日で止まったカレンダー（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">現在 - 止まったカレンダー</div>
+            <div class="scene-lyrics">最初で最後の夏</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Present day. A shot of a calendar in **Kenji**'s room, the page stopped on August 31st.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在のケンジの部屋にあるカレンダー、8月31日のページで止まっている。夏の終わりを象徴する重要なアイテム。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン17 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:46]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/CuYnfDLHTBH8QOTNoV4lv_809bde0cddca4f88ab4873cd16d2e410.jpg" alt="夏祭りで繋がれた手（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夏祭りで繋がれた手</div>
+            <div class="scene-lyrics">最初で最後の夏</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Flashback. A close-up of **Kenji** and **Yui**'s hands clasped together as they navigate through the crowd of a vibrant summer festival at night.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">回想。夜の活気ある夏祭りの人込みを進むときの、ケンジとユイが握り合った手のクローズアップ。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン18 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:49]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/elephant/xBNNOdDG-ZcAG4DPEJ-cg_e17e0a603906454e933eb70547c59027.jpg" alt="夕暮れの浜辺で一人のケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">現在 - 夕暮れの浜辺で一人</div>
+            <div class="scene-lyrics">ああ今でも忘れられない</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Present day. A solitary **Kenji** stands on the same beach at dusk, his silhouette against the fading light of the horizon.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在。同じビーチで夕暮れ時に一人立つケンジ、地平線の薄れゆく光に対する彼のシルエット。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン19 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:49]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/rabbit/DAs9UKbzBteDbxvUp-zDj_d4a537b9e9af4f9e83301d5981d8974f.jpg" alt="瞳に映る夏の思い出（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">瞳に映る夏の思い出</div>
+            <div class="scene-lyrics">ああ今でも忘れられない</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Close-up on **Kenji**'s melancholic eyes, with fragmented, dream-like flashes of summer memories reflected within them.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの物憂げな瞳のクローズアップ、その中に断片的で夢のような夏の思い出のフラッシュが映りこんでいる。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン20 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:55]</div>
+          <div class="duration">~25秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/monkey/8QjaNIS4Qu3A9znuB_Bcx_8a5390dd092b4ad8b77103b143175057.jpg" alt="スイカを食べるユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">スイカにかぶりつくユイの顔</div>
+            <div class="scene-lyrics">赤いスイカにかぶりつく君の顔</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Vivid flashback. A joyful close-up of **Yui**'s face as she takes a huge, happy bite of a juicy red watermelon slice on a traditional wooden porch (engawa).
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">鮮やかな回想。伝統的な木製の縁側で、瑞々しい赤いスイカのスライスを幸せそうに大きくかじるユイの顔の楽しいクローズアップ。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン21 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:55]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/GF7rO6-Ukflf7quhG2A0S_349666ddb57c4d22897c1608e9cff517.jpg" alt="カメラのファインダー越しのユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">ケンジの視点からカメラで</div>
+            <div class="scene-lyrics">赤いスイカにかぶりつく君の顔</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A point-of-view shot from **Kenji**'s perspective, looking through the viewfinder of a vintage film camera, capturing that perfect moment of **Yui** laughing.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの視点からの主観ショット、ビンテージフィルムカメラのファインダーを通して、笑っているユイの完璧な瞬間を捉えている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン22 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[00:55]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/r8W8HSle6ZovvTciQnhgN_d495da90abee461faa06cfad354ede04.jpg" alt="色褪せた写真（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">現在 - 手にした古い写真</div>
+            <div class="scene-lyrics">赤いスイカにかぶりつく君の顔</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A slightly faded, physical photograph showing the watermelon scene, held in **Kenji**'s hands in the present day.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在のケンジの手に持たれた、スイカのシーンを写した少し色褪せた物理的な写真。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン23 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:01]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/elephant/u3TyxPm7Yp7LopzzzlB6__2133222fd9d24aeb9ea327838d57b31d.jpg" alt="駅のホームのケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夏の終わり - 発車する電車</div>
+            <div class="scene-lyrics">ああ最後に聞こえた声</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Flashback. The end of summer at a train station. **Kenji** stands on the platform, watching a train begin to pull away.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">回想。駅での夏の終わり。ケンジがホームに立ち、電車が発車し始めるのを見ている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン24 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:01]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/koala/AavCaxpHiiui-dgWXvoyC_3232ae56ecff48f4af2d9b80b7abffae.jpg" alt="電車の窓のユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">電車の窓から「ありがとう」</div>
+            <div class="scene-lyrics">ああ最後に聞こえた声</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">View through the train window. **Yui** is leaning out, her mouth forming the silent word "Thank you".
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">電車の窓越しの視点。ユイが身を乗り出して、無言で「ありがとう」という言葉を口の形で作っている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン25 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:07]</div>
+          <div class="duration">~25秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/koala/XyItqlBbPgs0thUNjOAho_0809e9285299402880f62f734b17a98e.jpg" alt="必死に手を振るケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">振り返らずに手を振った君の声</div>
+            <div class="scene-lyrics">振り返らずに手を振った君の声</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Shot from behind **Kenji**, showing him waving desperately at the departing train until it becomes a small dot in the distance.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの後ろからのショット。発車していく電車に向かって必死に手を振っている様子を、電車が遠くの小さな点になるまで。</div>
+            <div class="video-duration">⏱️ 推定I2V: 7-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン26 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:07]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/penguin/n40-PUCRF6qcBFWkJIzNG_192d368895564ffe9f02e5cbca6199a2.jpg" alt="電車内で涙を流すユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">電車内のユイ - 一筋の涙</div>
+            <div class="scene-lyrics">振り返らずに手を振った君の声</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Yui**, seen from inside the train, continues to wave, a single tear tracing a path down her cheek as she looks back at the shrinking platform.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">電車の中から見えるユイ、手を振り続けながら、小さくなっていくホームを振り返り見て、一筋の涙が頬を伝っている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン27 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:13]</div>
+          <div class="duration">~24秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/zHje47qdK6LtBIy33MjKI_e4af07991b60442fa317fd505befd1a9.jpg" alt="貝殻を聞くケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">現在 - 貝殻に耳を当てて</div>
+            <div class="scene-lyrics">まだ僕の中にいる</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Present day. **Kenji** sits on the beach, holding a seashell to his ear, his eyes closed in deep thought.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在。ケンジがビーチに座り、貝殻を耳に当て、深い思いに目を閉じている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン28 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:13]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/45DlzF0RHQSsa2wd80X36_8f9083af3f2d43fab40e71ac762d5cc9.jpg" alt="光の粒子のユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">幻想的な光のユイの顔</div>
+            <div class="scene-lyrics">まだ僕の中にいる</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">An ethereal, dream-like image of **Yui**'s smiling face, composed of sparkling particles of light, floating and then dissipating in **Kenji**'s mind.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ユイの微笑む顔の幻想的で夢のような映像、輝く光の粒子で構成され、ケンジの心の中で浮遊してから消散していく。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン29 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:21]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/-rtuQiT-DWN83QT0Wx2uC_1a5e6ef428de4a4e82683417b85f9c5e.jpg" alt="赤いワンピースを見るユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">ショーウィンドウの赤いワンピース</div>
+            <div class="scene-lyrics">君が選んだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Flashback. **Yui** stands outside a shop, gazing intently at a vibrant red one-piece dress in the window display.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">回想。ユイが店の外に立って、ウィンドウディスプレイの鮮やかな赤いワンピースドレスを熱心に見つめている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン30 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:21]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/MCMC21EetfPg5p56GRjss_34d67bd39d8f445d90a4a1e2d480f99b.jpg" alt="ガラスに映るユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">ガラスに映る憧れと悲しみ</div>
+            <div class="scene-lyrics">君が選んだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A close-up of her reflection in the glass, her expression a mixture of desire and a deep, hidden sadness.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ガラスに映る彼女の反射のクローズアップ、憧れと深く隠された悲しみが混じった表情。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-5秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン31 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:23]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/efbo84J8G4NBsxjP7Cx3__851617bb66e44ee0800038347bf45cee.jpg" alt="別れの日の赤いワンピースのユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">別れの日 - 赤いワンピース</div>
+            <div class="scene-lyrics">赤いワンピース</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">The day of the farewell. **Yui** appears before **Kenji**, wearing the stunning red one-piece dress. She looks more mature, almost distant.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">別れの日。ユイがケンジの前に美しい赤いワンピースドレスを着て現れる。彼女はより成熟して、どこか遠い感じに見える。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン32 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:23]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/panda/s5YnUPFphc0s6Mlhl2DOP_a687c910ed3d4a24848d0aa31c047021.jpg" alt="鮮やかな赤と深い悲しみ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">鮮やかな赤と深い悲しみ</div>
+            <div class="scene-lyrics">赤いワンピース</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A powerful shot contrasting the vivid, passionate red of the dress with the profound sadness in **Yui**'s eyes.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ドレスの鮮やかで情熱的な赤とユイの瞳の深い悲しみを対比させたパワフルなショット。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン33 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:25]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/s3JEq3mkNrVGddDePQIsz_416cd87613bf441e8570d69608684af7.jpg" alt="後悔の表情のケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">地面を見つめる後悔の表情</div>
+            <div class="scene-lyrics">後悔した顔してる</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Close-up on **Kenji**'s face, looking down at the ground, unable to speak, his expression filled with regret.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの顔のクローズアップ、地面を見下ろして話すことができず、後悔に満ちた表情。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン34 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:25]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/panda/TJoNx4Zsd6gUeE1E3UsxL_3e1ae4b8676a4ddfbec67a1c25de86ff.jpg" alt="握りしめた拳（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">白くなった拳</div>
+            <div class="scene-lyrics">後悔した顔してる</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Tight shot of **Kenji**'s clenched fist at his side, knuckles white.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの脇で握りしめられた拳のタイトショット、関節が白くなっている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 3-4秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン35 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:28]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/lion/qjjvCcrkKIhThnCRHPd5G_dbdc243027c84731943cffbea9ba8e90.jpg" alt="頬に手を当てるユイ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">悲しい微笑みで頬に触れる</div>
+            <div class="scene-lyrics">きっと分かっていたんだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">**Yui** reaches out with a sad smile, her hand gently cupping **Kenji**'s cheek.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ユイが悲しい微笑みで手を伸ばし、ケンジの頬を優しく包んでいる。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン36 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:28]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/Ut03p_pkUyLyuboePsfuH_dddfa4b9994840338ea640f618bdf91a.jpg" alt="ケンジの目のクローズアップ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">最後の温もりを感じて</div>
+            <div class="scene-lyrics">きっと分かっていたんだ</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Close-up on **Kenji**'s eye as he closes it, feeling the warmth of her touch and understanding the finality of the moment.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジの目のクローズアップ。目を閉じて彼女の温もりを感じ、この瞬間の終わりを理解している。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン37 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:31]</div>
+          <div class="duration">~22秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/panda/SouKmih32Hc5AAWbUAxAm_06cdd76b13d24164aaca8efc327a4c63.jpg" alt="風で舞うユイの髪と赤いドレス（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">優しい風と散る葉</div>
+            <div class="scene-lyrics">最後の夏になるって</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A gentle breeze blows, lifting **Yui**'s hair and the hem of her red dress. Leaves skitter across the ground between them.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">優しい風が吹いて、ユイの髪と赤いドレスの裾を持ち上げる。葉っぱが二人の間の地面を駆け抜けていく。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン38 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[01:31]</div>
+          <div class="duration">~25秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/penguin/sIlNR4KwJTjwSGmjsKFOS_338f06e00d0b4a088770961770e2350f.jpg" alt="夕日に離れて立つ二人（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">時代の終わりを告げる夕空</div>
+            <div class="scene-lyrics">最後の夏になるって</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A wide shot of the two of them standing apart, framed by a vast, melancholic sunset sky, signifying the end of an era.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">離れて立つ二人のワイドショット、広大で憂鬱な夕空にフレーミングされ、一つの時代の終わりを表している。</div>
+            <div class="video-duration">⏱️ 推定I2V: 7-9秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン39 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:18]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/panda/4OIas8ic47glpAhyVMewW_ae4eb8b557544295bac1464f3f2f48e4.jpg" alt="夕日に染まった赤い海（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夕日に染まった赤い海</div>
+            <div class="scene-lyrics">赤い海のように</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">An epic, surreal landscape shot where the entire ocean is colored a deep, burning red by the sunset.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">夕日によって海全体が深く燃えるような赤に染まった壮大でシュールな風景ショット。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-7秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン40 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:18]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/tiger/cBBuOYnClEsQZoNgrjP04_34a2790eda2e41f7abab07ff7fcc8aba.jpg" alt="赤い海へ向かう二人のシルエット（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">思い出に飲み込まれていく</div>
+            <div class="scene-lyrics">赤い海のように</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">The tiny silhouettes of **Kenji** and **Yui** are seen walking toward the red sea, as if being consumed by the memory.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ケンジとユイの小さなシルエットが赤い海に向かって歩いている様子、思い出に飲み込まれていくかのように。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン41 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:21]</div>
+          <div class="duration">~12秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/1I3TzJnsJ6YaNvqMHVykA_edfea8098fc6487cb117d6d733e62740.jpg" alt="夏祭りの大きな赤い花火（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">夏祭りの大きな花火</div>
+            <div class="scene-lyrics">熱く燃えて</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">A massive, vibrant red firework explodes in the night sky during the summer festival.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">夏祭りの夜空で巨大で鮮やかな赤い花火が炸裂している。</div>
+            <div class="video-duration">⏱️ 推定I2V: 4-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン42 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:21]</div>
+          <div class="duration">~15秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/ah-bZhcQejMDunOFUNNON_c245136c01bc41f8b9090914523c544f.jpg" alt="花火の光に照らされる二人（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">花火の光に見つめ合う</div>
+            <div class="scene-lyrics">熱く燃えて</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">The explosive light of the firework illuminates the faces of **Kenji** and **Yui** as they look up, then at each other.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">花火の爆発的な光がケンジとユイの顔を照らし、二人は空を見上げてからお互いを見つめる。</div>
+            <div class="video-duration">⏱️ 推定I2V: 5-6秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン43 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:23]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/rabbit/6ATXQw0IMaGJXY2zSnIz3_db3b3ba8aabf413cbb4d8d9d26501dbb.jpg" alt="消えゆく花火の煙（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">空に残る一筋の煙</div>
+            <div class="scene-lyrics">燃えつきた</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">The firework fades, leaving only a single, lingering trail of smoke against the dark, empty sky.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">花火が消えて、暗く空っぽな空に一筋の煙の跡だけが残っている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン44 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:23]</div>
+          <div class="duration">~18秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/elephant/-V2vKDcGpf2nujRnV7FK__a55bb0405fe846d89201eafb15dbf3c9.jpg" alt="波に消される足跡（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">波に消される足跡</div>
+            <div class="scene-lyrics">燃えつきた</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">The beach is now empty, with two sets of footprints leading to the water's edge, slowly being washed away by the tide.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">ビーチは今空っぽで、水際に続く二組の足跡が潮によってゆっくりと洗い流されている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン45 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:50]</div>
+          <div class="duration">~20秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/kangaroo/XvQpe4yC8o41V68RjutRH_edc4d83940674920924654331f031569.jpg" alt="幻のユイの最後の微笑み（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">最後の微笑みと消失</div>
+            <div class="scene-lyrics">最終コーラス</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Present day. At the water's edge, a spectral, translucent image of **Yui** in her red dress appears. She turns, offers one last gentle smile, and dissolves into the golden light of the sunset.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">現在。水際で、赤いドレスを着たユイの幽霊のような半透明の姿が現れる。振り返って最後の優しい微笑みを見せ、夕日の黄金の光に溶けていく。</div>
+            <div class="video-duration">⏱️ 推定I2V: 8-10秒</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- シーン46 -->
+      <div class="scene-item">
+        <div class="timecode">
+          <div class="time">[02:53]</div>
+          <div class="duration">~10秒</div>
+        </div>
+        
+        <div class="image-frame">
+          <img src="https://v3.fal.media/files/zebra/nmiIVBVzXBqVVr43bd-OT_5b319c24640e4b2e9bba1abe717434e9.jpg" alt="最終ショット - 穏やかなケンジ（モネ風）">
+        </div>
+        
+        <div class="scene-info">
+          <div class="scene-header">
+            <div class="scene-title">最終ショット - 穏やかな受容</div>
+            <div class="scene-lyrics">エンディング</div>
+          </div>
+          
+          <div class="prompt-section">
+            <div class="prompt-label">🎨 AI生成プロンプト</div>
+            <div class="prompt-text">Final shot. **Kenji** is alone on the beach. He looks up at the sky, a faint, peaceful smile on his face, accepting the memory as a beautiful part of him.
+
+[マスタープロンプト適用]</div>
+          </div>
+          
+          <div class="description-section">
+            <div class="description-label">📝 シーン説明</div>
+            <div class="description-text">最終ショット。ケンジがビーチで一人。空を見上げ、顔にかすかで平和な微笑みを浮かべ、思い出を自分の美しい一部として受け入れている。</div>
+            <div class="video-duration">⏱️ 推定I2V: 6-8秒</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let imageCount = 0;
+    const totalScenes = 46; // 実際のシーン数に合わせて調整
+
+    function uploadImage(frameElement) {
+      const fileInput = frameElement.querySelector('.file-input');
+      fileInput.click();
+    }
+
+    function handleImageUpload(input) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.alt = '絵コンテ画像';
+          
+          const frameElement = input.parentElement;
+          const placeholder = frameElement.querySelector('.image-placeholder');
+          
+          // プレースホルダーを画像で置き換え
+          if (placeholder) {
+            frameElement.removeChild(placeholder);
+          }
+          
+          // 既存の画像がある場合は置き換え
+          const existingImg = frameElement.querySelector('img');
+          if (existingImg) {
+            frameElement.removeChild(existingImg);
+          } else {
+            // 新しい画像の場合はカウントアップ
+            imageCount++;
+            updateStats();
+          }
+          
+          frameElement.appendChild(img);
+          
+          // 枠線を実線に変更
+          frameElement.style.borderStyle = 'solid';
+          frameElement.style.borderColor = 'var(--success)';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('completed-images').textContent = imageCount;
+      
+      // 推定動画尺の計算（1画像平均5秒として）
+      const estimatedMinutes = Math.floor(imageCount * 5 / 60);
+      const estimatedSeconds = (imageCount * 5) % 60;
+      document.getElementById('estimated-video-length').textContent = 
+        `${estimatedMinutes}:${estimatedSeconds.toString().padStart(2, '0')}`;
+    }
+
+    // 初期化
+    updateStats();
+  </script>
+</body>
+</html>
